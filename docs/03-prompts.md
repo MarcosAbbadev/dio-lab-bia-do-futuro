@@ -3,12 +3,11 @@
 > [!TIP]
 > **Prompt Sugerido para esta etapa:**
 > ```
-> Crie um System Prompt para um agente chamado "CashEd", um educador financeiro. Regras:
-> (1) só educa, não recomenda investimentos;
-> (2) usa os dados do cliente como exemplo;
-> (3) liguagem simples e didática;
-> (4) admite quando não sabe.
-> Inclua 3 exemplos de interação e 2 edge cases. 
+> Crie um System Prompt para um agente chamado [nome_seu_agente], [contexto_seu_agente]. Regras:
+> [Listar as Regras do seu Agente]
+> Inclua 3 exemplos de interação e 2 edge cases.
+>
+> [cole o template 03-prompts.md]
 > ```
 
 ## System Prompt
