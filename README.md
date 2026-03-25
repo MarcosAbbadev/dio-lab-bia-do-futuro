@@ -1,110 +1,93 @@
-# 🤖 Agente Financeiro Inteligente com IA Generativa
+# 💸 CashEd — Seu Educador Financeiro com IA
 
-## Contexto
+Agente de IA educativo que ensina conceitos de finanças pessoais de forma simples e personalizada, usando os dados do próprio cliente como exemplos práticos.
 
-Os assistentes virtuais no setor financeiro estão evoluindo de simples chatbots reativos para **agentes inteligentes e proativos**. Neste desafio, você vai idealizar e prototipar um agente financeiro que utiliza IA Generativa para:
-
-- **Antecipar necessidades** ao invés de apenas responder perguntas
-- **Personalizar** sugestões com base no contexto de cada cliente
-- **Cocriar soluções** financeiras de forma consultiva
-- **Garantir segurança** e confiabilidade nas respostas (anti-alucinação)
-
-> [!TIP]
-> Na pasta [`examples/`](./examples/) você encontra referências de implementação para cada etapa deste desafio.
+> **Importante:** O CashEd **não recomenda investimentos**. Ele explica, ensina e contextualiza — como um professor paciente que nunca julga seus gastos.
 
 ---
 
-## O Que Você Deve Entregar
+## O Problema
 
-### 1. Documentação do Agente
+A maioria das pessoas nunca teve acesso a uma educação financeira de qualidade. Conceitos como reserva de emergência, tipos de investimento e organização de gastos parecem complicados — mas não precisam ser.
 
-Defina **o que** seu agente faz e **como** ele funciona:
+## A Solução
 
-- **Caso de Uso:** Qual problema financeiro ele resolve? (ex: consultoria de investimentos, planejamento de metas, alertas de gastos)
-- **Persona e Tom de Voz:** Como o agente se comporta e se comunica?
-- **Arquitetura:** Fluxo de dados e integração com a base de conhecimento
-- **Segurança:** Como evitar alucinações e garantir respostas confiáveis?
+O CashEd (Ed, pra quem é chegado) é um chatbot educativo que:
 
-📄 **Template:** [`docs/01-documentacao-agente.md`](./docs/01-documentacao-agente.md)
-
----
-
-### 2. Base de Conhecimento
-
-Utilize os **dados mockados** disponíveis na pasta [`data/`](./data/) para alimentar seu agente:
-
-| Arquivo | Formato | Descrição |
-|---------|---------|-----------|
-| `transacoes.csv` | CSV | Histórico de transações do cliente |
-| `historico_atendimento.csv` | CSV | Histórico de atendimentos anteriores |
-| `perfil_investidor.json` | JSON | Perfil e preferências do cliente |
-| `produtos_financeiros.json` | JSON | Produtos e serviços disponíveis |
-
-Você pode adaptar ou expandir esses dados conforme seu caso de uso.
-
-📄 **Template:** [`docs/02-base-conhecimento.md`](./docs/02-base-conhecimento.md)
+- Explica conceitos financeiros com linguagem simples e acessível
+- Usa as transações e o perfil do próprio cliente como exemplos reais
+- Admite quando não sabe algo, em vez de inventar
+- Nunca sai do tema — foco total em educação financeira
 
 ---
 
-### 3. Prompts do Agente
+## Arquitetura
 
-Documente os prompts que definem o comportamento do seu agente:
+| Componente | Tecnologia |
+|------------|------------|
+| Interface | Streamlit |
+| LLM | Ollama (local) |
+| Base de conhecimento | JSON + CSV (dados mockados) |
 
-- **System Prompt:** Instruções gerais de comportamento e restrições
-- **Exemplos de Interação:** Cenários de uso com entrada e saída esperada
-- **Tratamento de Edge Cases:** Como o agente lida com situações limite
+## Fluxograma de Arquitetura
 
-📄 **Template:** [`docs/03-prompts.md`](./docs/03-prompts.md)
+```mermaid
+flowchart TD
+    A([Usuário]) --> B[Streamlit\nInterface visual]
+    B --> C[Montagem do contexto\nPerfil + transações + histórico + produtos]
 
----
+    D[(perfil_investidor.json)] -.-> C
+    E[(transacoes.csv)] -.-> C
+    F[(historico_atendimento.csv)] -.-> C
+    G[(produtos_financeiros.json)] -.-> C
 
-### 4. Aplicação Funcional
-
-Desenvolva um **protótipo funcional** do seu agente:
-
-- Chatbot interativo (sugestão: Streamlit, Gradio ou similar)
-- Integração com LLM (via API ou modelo local)
-- Conexão com a base de conhecimento
-
-📁 **Pasta:** [`src/`](./src/)
-
----
-
-### 5. Avaliação e Métricas
-
-Descreva como você avalia a qualidade do seu agente:
-
-**Métricas Sugeridas:**
-- Precisão/assertividade das respostas
-- Taxa de respostas seguras (sem alucinações)
-- Coerência com o perfil do cliente
-
-📄 **Template:** [`docs/04-metricas.md`](./docs/04-metricas.md)
+    C --> H[LLM - Ollama\ngpt-oss:20b local\nSystem prompt + contexto injetado]
+    H --> I[Validação\nAnti-alucinação + escopo]
+    I --> J([Resposta\nEd responde ao chat])
+    J --> A
+```
 
 ---
 
-### 6. Pitch
+## Base de Conhecimento
 
-Grave um **pitch de 3 minutos** (estilo elevador) apresentando:
-
-- Qual problema seu agente resolve?
-- Como ele funciona na prática?
-- Por que essa solução é inovadora?
-
-📄 **Template:** [`docs/05-pitch.md`](./docs/05-pitch.md)
+| Arquivo | Uso |
+|---------|-----|
+| `data/perfil_investidor.json` | Personalizar as explicações ao perfil do cliente |
+| `data/transacoes.csv` | Exemplos práticos com os gastos reais do cliente |
+| `data/produtos_financeiros.json` | Explicar os produtos disponíveis (sem recomendar) |
+| `data/historico_atendimento.csv` | Contextualizar atendimentos anteriores |
 
 ---
 
-## Ferramentas Sugeridas
+## Como Rodar
 
-Todas as ferramentas abaixo possuem versões gratuitas:
+**1. Instalar o Ollama e baixar o modelo:**
+```bash
+ollama pull gpt-oss:20b
+```
 
-| Categoria | Ferramentas |
-|-----------|-------------|
-| **LLMs** | [ChatGPT](https://chat.openai.com/), [Copilot](https://copilot.microsoft.com/), [Gemini](https://gemini.google.com/), [Claude](https://claude.ai/), [Ollama](https://ollama.ai/) |
-| **Desenvolvimento** | [Streamlit](https://streamlit.io/), [Gradio](https://www.gradio.app/), [Google Colab](https://colab.research.google.com/) |
-| **Orquestração** | [LangChain](https://www.langchain.com/), [LangFlow](https://www.langflow.org/), [CrewAI](https://www.crewai.com/) |
-| **Diagramas** | [Mermaid](https://mermaid.js.org/), [Draw.io](https://app.diagrams.net/), [Excalidraw](https://excalidraw.com/) |
+**2. Instalar dependências:**
+```bash
+pip install -r requirements.txt
+```
+
+**3. Rodar a aplicação:**
+```bash
+streamlit run src/app.py
+```
+
+---
+
+## System Prompt
+
+O comportamento do Ed é definido por um prompt simples e direto:
+
+- Linguagem acessível, como se explicasse para uma criança
+- Máximo de 2 parágrafos por resposta
+- Jamais recomenda investimentos — apenas explica como funcionam
+- Fora do tema de finanças? Redireciona educadamente
+- Não sabe algo? Admite e explica o que pode
 
 ---
 
@@ -112,38 +95,25 @@ Todas as ferramentas abaixo possuem versões gratuitas:
 
 ```
 📁 lab-agente-financeiro/
-│
-├── 📄 README.md
-│
-├── 📁 data/                          # Dados mockados para o agente
-│   ├── historico_atendimento.csv     # Histórico de atendimentos (CSV)
-│   ├── perfil_investidor.json        # Perfil do cliente (JSON)
-│   ├── produtos_financeiros.json     # Produtos disponíveis (JSON)
-│   └── transacoes.csv                # Histórico de transações (CSV)
-│
-├── 📁 docs/                          # Documentação do projeto
-│   ├── 01-documentacao-agente.md     # Caso de uso e arquitetura
-│   ├── 02-base-conhecimento.md       # Estratégia de dados
-│   ├── 03-prompts.md                 # Engenharia de prompts
-│   ├── 04-metricas.md                # Avaliação e métricas
-│   └── 05-pitch.md                   # Roteiro do pitch
-│
-├── 📁 src/                           # Código da aplicação
-│   └── app.py                        # (exemplo de estrutura)
-│
-├── 📁 assets/                        # Imagens e diagramas
-│   └── ...
-│
-└── 📁 examples/                      # Referências e exemplos
-    └── README.md
+├── data/                        # Dados mockados do cliente
+├── docs/                        # Documentação completa do agente
+│   ├── 01-documentacao-agente.md
+│   ├── 02-base-conhecimento.md
+│   ├── 03-prompts.md
+│   ├── 04-metricas.md
+│   └── 05-pitch.md
+└── src/
+    └── app.py                   # Código da aplicação
 ```
 
 ---
 
-## Dicas Finais
+## Limitações Declaradas
 
-1. **Comece pelo prompt:** Um bom system prompt é a base de um agente eficaz
-2. **Use os dados mockados:** Eles garantem consistência e evitam problemas com dados sensíveis
-3. **Foque na segurança:** No setor financeiro, evitar alucinações é crítico
-4. **Teste cenários reais:** Simule perguntas que um cliente faria de verdade
-5. **Seja direto no pitch:** 3 minutos passam rápido, vá ao ponto
+- Não faz recomendações de investimento
+- Não acessa dados bancários reais
+- Não substitui um profissional qualificado
+
+---
+
+Feito com 💚 por Marcos Abbade — Desafio DIO: Agente Inteligente com IA Generativa
